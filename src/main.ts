@@ -8,7 +8,7 @@ async function bootstrap() {
   // Enable CORS
   app.enableCors({
     origin: 'http://localhost:3000', // aapke frontend ka origin
-    methods: 'GET,POST,PUT,DELETE',
+    methods: 'GET,POST,PUT,PATCH,DELETE,OPTIONS',
   });
 
   // Swagger setup

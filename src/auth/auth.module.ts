@@ -14,7 +14,7 @@ import { MailerModule } from '../user/mailer.module';
     UserModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
-      secret: process.env.JWT_SECRET || 'dev_secret_change_me',
+      secret: process.env.JWT_SECRET || 'jawad03190412258',
       signOptions: { expiresIn: '7d' },
     }),
     MailerModule, // or MailModule

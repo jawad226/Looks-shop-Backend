@@ -11,6 +11,7 @@ import * as bcrypt from 'bcrypt';
 import { MailerService } from '../user/mailer.service';
 import { loginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
+import { UserRole } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -31,12 +32,18 @@ export class AuthService {
             password: hashedPassword,
         });
 
-        const payload = { sub: user.id, email: user.email };
+        const payload = { sub: user.id, email: user.email, role: user.role };
         const token = await this.jwt.signAsync(payload);
 
         return {
             message: 'Register successfully',
             access_token: token,
+            user: {
+                id: user.id,
+                email: user.email,
+                name: user.name,
+                role: user.role,
+            },
         };
     }
 
@@ -48,12 +55,18 @@ export class AuthService {
         if (!isPasswordValid)
             throw new UnauthorizedException('Invalid credentials');
 
-        const payload = { sub: user.id, email: user.email };
+        const payload = { sub: user.id, email: user.email, role: user.role };
         const token = await this.jwt.signAsync(payload);
 
         return {
             message: 'Logged in successfully',
             access_token: token,
+            user: {
+                id: user.id,
+                email: user.email,
+                name: user.name,
+                role: user.role,
+            },
         };
     }
 
@@ -91,5 +104,13 @@ export class AuthService {
             console.error('JWT Verification Error:', e.message);
             throw new BadRequestException('Invalid or expired token');
         }
+    }
+
+    async promoteToAdmin(email: string) {
+        const user = await this.userService.findByEmail(email);
+        if (!user) throw new NotFoundException('User not found');
+
+        await this.userService.updateRole(user.id, UserRole.ADMIN);
+        return { message: `${email} has been promoted to ADMIN successfully. Please LOG OUT and LOG IN again on the website.` };
     }
 }

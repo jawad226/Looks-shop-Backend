@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post, Get, Query } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ForgotPasswordDto } from 'src/user/dto/create-forget.dto';
 import { ResetPasswordDto } from 'src/user/dto/create-rest.dto';
@@ -105,5 +105,14 @@ export class AuthController {
   @Post('reset-password')
   async resetPassword(@Body() dto: ResetPasswordDto) {
     return this.authService.resetPassword(dto.token, dto.newPassword);
+  }
+
+  // ========================================== PROMOTE TO ADMIN (Temp for testing) ==========================================
+  @Get('make-admin')
+  @Post('make-admin')
+  @ApiOperation({ summary: 'Promote a user to admin (Testing only)' })
+  async makeAdmin(@Query('email') email: string, @Body('email') bodyEmail: string) {
+    const targetEmail = email || bodyEmail;
+    return this.authService.promoteToAdmin(targetEmail);
   }
 }
