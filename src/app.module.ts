@@ -109,6 +109,51 @@
 // })
 // export class AppModule { }
 
+// import { Module } from '@nestjs/common';
+// import { ConfigModule, ConfigService } from '@nestjs/config';
+// import { TypeOrmModule } from '@nestjs/typeorm';
+// import { UserModule } from './user/user.module';
+// import { AuthModule } from './auth/auth.module';
+// import { MailerModule } from './user/mailer.module';
+// import { ProductModule } from './product/product.module';
+// import { OrderModule } from './order/order.module';
+// import { StatsModule } from './stats/stats.module';
+// import { CategoryModule } from './category/category.module';
+// import { AppController } from './app.controller';
+// import { AppService } from './app.service';
+
+// @Module({
+//   imports: [
+//     ConfigModule.forRoot({
+//       isGlobal: true, // accessible everywhere
+//     }),
+
+//     TypeOrmModule.forRootAsync({
+//       imports: [ConfigModule],
+//       inject: [ConfigService],
+//       useFactory: (configService: ConfigService) => ({
+//         type: 'postgres',
+//         url: configService.get<string>('DATABASE_URL'), // Railway DB URL
+//         autoLoadEntities: true, // auto load all entities
+//         synchronize: true, // auto create tables
+//       }),
+//     }),
+
+//     UserModule,
+//     AuthModule,
+//     MailerModule,
+//     ProductModule,
+//     OrderModule,
+//     StatsModule,
+//     CategoryModule,
+//   ],
+//   controllers: [AppController],
+//   providers: [AppService],
+// })
+// export class AppModule { }
+
+
+
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -133,9 +178,10 @@ import { AppService } from './app.service';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        url: configService.get<string>('DATABASE_URL'), // Railway DB URL
-        autoLoadEntities: true, // auto load all entities
-        synchronize: true, // auto create tables
+        url: configService.get<string>('DATABASE_URL'),
+        autoLoadEntities: true,
+        synchronize: true,
+        ssl: { rejectUnauthorized: false }, // Important for Railway
       }),
     }),
 
