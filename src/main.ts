@@ -7,7 +7,7 @@ async function bootstrap() {
 
   // Enable CORS
   app.enableCors({
-    origin: 'http://localhost:3000', // aapke frontend ka origin
+    origin: 'https://looks-shop.vercel.app', // aapke frontend ka origin
     methods: 'GET,POST,PUT,PATCH,DELETE,OPTIONS',
   });
 
